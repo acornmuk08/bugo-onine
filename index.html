@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FC 부고</title>
+<title>FC 부고 온라인</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -271,19 +271,19 @@ select#formationSelect{
 /* ---------- LIVE MATCH MINI PITCH ---------- */
 .mini-pitch-wrap{margin-top:18px;}
 .mini-pitch{
-  position:relative;width:100%;height:150px;border-radius:12px;overflow:hidden;
+  position:relative;width:100%;aspect-ratio:2.2/1;min-height:280px;max-height:480px;border-radius:12px;overflow:hidden;
   background:repeating-linear-gradient(90deg, #0F3D2C 0px, #0F3D2C 26px, #0C3527 26px, #0C3527 52px);
   border:2px solid rgba(255,255,255,0.25);
   box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
 }
 .mini-pitch .mp-halfway{position:absolute;top:0;bottom:0;left:50%;border-left:1.5px solid rgba(255,255,255,0.35);}
 .mini-pitch .mp-circle{position:absolute;left:50%;top:50%;height:52%;aspect-ratio:1;border:1.5px solid rgba(255,255,255,0.35);border-radius:50%;transform:translate(-50%,-50%);}
-.mini-pitch .mp-goal{position:absolute;top:30%;bottom:30%;width:10px;background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.4);}
+.mini-pitch .mp-goal{position:absolute;top:30%;bottom:30%;width:16px;background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.4);}
 .mini-pitch .mp-goal.left{left:0;border-left:none;}
 .mini-pitch .mp-goal.right{right:0;border-right:none;}
 .mini-pitch .mp-goal.flash{background:var(--accent);box-shadow:0 0 20px var(--accent);}
 .mini-pitch .mp-goal.left.flash{background:var(--danger);box-shadow:0 0 20px var(--danger);}
-.mini-pitch .mp-label{position:absolute;top:6px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);}
+.mini-pitch .mp-label{position:absolute;top:8px;font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);}
 .mini-pitch .mp-label.left{left:16px;}
 .mini-pitch .mp-label.right{right:16px;}
 .mini-pitch .mp-ball{
@@ -297,8 +297,8 @@ select#formationSelect{
 .mini-pitch .mp-ball.fast{transition-duration:0.32s;}
 .mini-pitch .mp-status{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;letter-spacing:1px;
-  color:var(--accent);text-shadow:0 0 12px rgba(34,230,166,0.8);opacity:0;transition:opacity .2s;
+  font-family:'Oswald',sans-serif;font-weight:700;font-size:32px;letter-spacing:1.5px;
+  color:var(--accent);text-shadow:0 0 16px rgba(34,230,166,0.8);opacity:0;transition:opacity .2s;
   pointer-events:none;text-transform:uppercase;z-index:6;
 }
 .mini-pitch .mp-status.show{opacity:1;}
@@ -497,10 +497,7 @@ select#formationSelect{
         </div>
 
         <div>
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-            <h2 class="section-title" style="margin:0;"><span class="accent-bar"></span>보유 선수</h2>
-            <button id="addPlayerBtn" class="detail-btn">+ 선수 직접 추가</button>
-          </div>
+          <h2 class="section-title"><span class="accent-bar"></span>보유 선수</h2>
           <div class="bench-filters" id="benchFilters">
             <button data-f="ALL" class="active">전체</button>
             <button data-f="GK">GK</button>
@@ -712,8 +709,20 @@ function getAvatarUri(player){
 }
 
 const NATIONS = ['🇰🇷 대한민국','🇧🇷 브라질','🇩🇪 독일','🇫🇷 프랑스','🇪🇸 스페인','🇮🇹 이탈리아','🇵🇹 포르투갈','🇦🇷 아르헨티나','🏴󠁧󠁢󠁥󠁮󠁧󠁿 잉글랜드','🇳🇱 네덜란드','🇧🇪 벨기에','🇭🇷 크로아티아','🇺🇾 우루과이','🇯🇵 일본','🇺🇸 미국'];
-const FIRST_NAMES = ['민준','도현','시우','건우','현우','지훈','태양','성민','유진','재원','한결','승우','동현','우진','준서','다니엘','루카스','마르코','안드레','카를로스','디에고','피에르','올리버','잭슨','알렉스','브루노','파비오','세르히오','토마스','이고르','미겔','라파엘','다니','케빈','유리'];
-const LAST_NAMES = ['김','이','박','최','정','강','조','장','임','한','로드리게스','실바','슈미트','베르나르','모레티','스미스','뒤퐁','노바크','피셔','안데르손','가르시아','뮐러'];
+/* 새로 생성되는 선수(초기 스쿼드, 팩 뽑기 등)는 아래 100명의 이름 중에서만 무작위로 선택됩니다.
+   이 배열을 직접 수정해서 원하는 이름으로 바꾸세요. (100개 미만/초과여도 동작합니다) */
+const PLAYER_NAME_POOL = [
+  '김민준','이도현','박시우','최건우','정현우','강지훈','조태양','장성민','임유진','한재원',
+  '오한결','신승우','권동현','황우진','안준서','서다니엘','송루카스','류마르코','노안드레','문카를로스',
+  '배디에고','백피에르','남올리버','윤잭슨','손알렉스','홍브루노','전파비오','유세르히오','고토마스','양이고르',
+  '김민재','이강인','박지성','손흥민','황희찬','조규성','이재성','김영권','권창훈','정우영',
+  '나상호','송민규','오현규','설영우','김진수','이기제','조현우','김승규','황인범','이순민',
+  '변준수','박용우','정승현','김민혁','문선민','백승호','이동경','엄원상','조유민','양현준',
+  '루카 모드리치','크리스티아누 호날두','리오넬 메시','케빈 더 브라위너','로베르트 레반도프스키','칼리두 쿨리발리','티보 쿠르투아','마르쿠스 라시포드','필 포든','부카요 사카',
+  '제이드 그릴리쉬','데클란 라이스','케인 윌리엄슨','에두아르도 카마빙가','오렐리앙 추아메니','비니시우스 주니어','호드리구','페드리','가비','안수 파티',
+  '자말 무샬라','플로리안 비르츠','일카이 귄도안','조슈아 키미히','안토니오 뤼디거','마르코 로이스','티모 베르너','세르주 그나브리','레온 고레츠카','니클라스 쥘레',
+  '올리비에 지루','앙투안 그리즈만','은골로 캉테','폴 포그바','라파엘 바란','우스만 뎀벨레','킬리안 음바페','크리스토퍼 은쿤쿠','랑달 콜로 무아니','브래들리 바르콜라',
+];
 
 const PACKS = [
   {key:'normal',name:'노멀팩',cost:150,icon:'📦',glow:'var(--silver)',odds:{bronze:0.60,silver:0.32,gold:0.07,icon:0.01}},
@@ -721,8 +730,8 @@ const PACKS = [
 ];
 
 const OPP_NAME_POOL = [
-  ['🛡️','한일FC',62],['⚔️','AC 대성마이맥',69],['🐉','메가스터디 러셀 시티',75],
-  ['🦅','시대인재 FC',81],['👑','레알 현역이들',87],['🔥','N수생 유나이티드',92],
+   ['🛡️','한일FC',62],['⚔️','TEAM 09',69],['🐉','바이에른 허수',75],
+  ['🦅','메가스터디 러셀 FC',81],['👑','레알 대성 마이맥',87],['🔥','시대인재 FC',92],
 ];
 
 /* 여기에 선수를 직접 추가하면 게임 시작 시 '보유 선수' 명단에 자동으로 포함됩니다.
@@ -735,9 +744,80 @@ const OPP_NAME_POOL = [
    ];
 */
 const CUSTOM_PLAYERS = [
-  // 이 배열 안에 원하는 만큼 선수 객체를 추가하세요.
-  { name:'이혁준', position:'AM', stats:{pace:88,shot:90,pass:90,dribble:85,defense:45,physical:65} },
-  { name:'강현묵', position:'RB', stats:{pace:88,shot:40,pass:70,dribble:75,defense:70,physical:75} },
+  { name:'김민제', position:'CB', stats:{pace:74,shot:42,pass:71,dribble:63,defense:90,physical:88} },
+  { name:'안수영', position:'CM', stats:{pace:76,shot:73,pass:84,dribble:81,defense:71,physical:74} },
+  { name:'장의선', position:'ST', stats:{pace:91,shot:89,pass:70,dribble:87,defense:32,physical:79} },
+  { name:'윤주영', position:'RW', stats:{pace:92,shot:83,pass:78,dribble:90,defense:39,physical:71} },
+  { name:'김광유', position:'GK', stats:{pace:45,shot:15,pass:68,dribble:40,defense:94,physical:85} },
+  { name:'노원호', position:'LB', stats:{pace:83,shot:55,pass:76,dribble:75,defense:84,physical:81} },
+  { name:'황선민', position:'CB', stats:{pace:72,shot:38,pass:69,dribble:61,defense:91,physical:89} },
+  { name:'어성경', position:'DM', stats:{pace:72,shot:60,pass:82,dribble:75,defense:85,physical:83} },
+  { name:'김행신', position:'LW', stats:{pace:90,shot:82,pass:79,dribble:91,defense:35,physical:68} },
+  { name:'김참이', position:'AM', stats:{pace:80,shot:84,pass:88,dribble:89,defense:50,physical:72} },
+  { name:'김지섭', position:'RB', stats:{pace:84,shot:54,pass:75,dribble:76,defense:83,physical:82} },
+  { name:'강현묵', position:'CM', stats:{pace:79,shot:77,pass:86,dribble:84,defense:74,physical:78} },
+  { name:'송주헌', position:'ST', stats:{pace:88,shot:91,pass:68,dribble:85,defense:30,physical:82} },
+  { name:'안서진', position:'LW', stats:{pace:91,shot:81,pass:77,dribble:90,defense:37,physical:70} },
+  { name:'안시안', position:'CB', stats:{pace:73,shot:36,pass:70,dribble:60,defense:92,physical:90} },
+  { name:'윤이태', position:'CM', stats:{pace:78,shot:75,pass:85,dribble:83,defense:72,physical:77} },
+  { name:'이건중', position:'DM', stats:{pace:73,shot:61,pass:81,dribble:73,defense:86,physical:84} },
+  { name:'이동환', position:'RW', stats:{pace:93,shot:84,pass:77,dribble:91,defense:36,physical:69} },
+  { name:'이성욱', position:'CB', stats:{pace:75,shot:40,pass:72,dribble:64,defense:89,physical:87} },
+  { name:'이윤호', position:'AM', stats:{pace:81,shot:83,pass:89,dribble:88,defense:48,physical:71} },
+  { name:'이정우', position:'LB', stats:{pace:82,shot:53,pass:77,dribble:74,defense:85,physical:80} },
+  { name:'이정호', position:'ST', stats:{pace:89,shot:90,pass:71,dribble:86,defense:31,physical:80} },
+  { name:'이현성', position:'GK', stats:{pace:44,shot:14,pass:66,dribble:39,defense:95,physical:86} },
+  { name:'이혁준', position:'RB', stats:{pace:85,shot:56,pass:76,dribble:77,defense:84,physical:83} },
+  { name:'임동현', position:'CM', stats:{pace:77,shot:74,pass:84,dribble:82,defense:73,physical:76} },
+  { name:'장효근', position:'CB', stats:{pace:71,shot:37,pass:68,dribble:59,defense:90,physical:91} },
+  { name:'정교빈', position:'RW', stats:{pace:94,shot:82,pass:79,dribble:92,defense:34,physical:68} },
+  { name:'정지언', position:'DM', stats:{pace:74,shot:62,pass:80,dribble:74,defense:87,physical:85} },
+  { name:'성찬우', position:'LW', stats:{pace:92,shot:83,pass:78,dribble:90,defense:38,physical:70} },
+  { name:'최윤호', position:'ST', stats:{pace:90,shot:88,pass:69,dribble:87,defense:29,physical:81} },
+  { name:'최은찬', position:'CM', stats:{pace:80,shot:76,pass:86,dribble:85,defense:71,physical:77} },
+  { name:'홍영민', position:'CB', stats:{pace:74,shot:39,pass:71,dribble:62,defense:91,physical:88} },
+  { name:'강승유', position:'AM', stats:{pace:82,shot:85,pass:90,dribble:89,defense:47,physical:73} },
+  { name:'김대환', position:'LB', stats:{pace:84,shot:54,pass:76,dribble:75,defense:84,physical:82} },
+  { name:'김범준', position:'RW', stats:{pace:91,shot:84,pass:80,dribble:91,defense:35,physical:72} },
+  { name:'이강희', position:'CM', stats:{pace:78,shot:75,pass:85,dribble:84,defense:74,physical:78} },
+  { name:'김도현', position:'CB', stats:{pace:73,shot:38,pass:70,dribble:61,defense:90,physical:89} },
+  { name:'김선민', position:'LW', stats:{pace:93,shot:82,pass:77,dribble:92,defense:36,physical:69} },
+  { name:'김지훈', position:'ST', stats:{pace:89,shot:89,pass:70,dribble:86,defense:30,physical:80} },
+  { name:'박범준', position:'RB', stats:{pace:84,shot:55,pass:75,dribble:76,defense:83,physical:82} },
+  { name:'박효근', position:'DM', stats:{pace:72,shot:61,pass:81,dribble:74,defense:86,physical:84} },
+  { name:'안지석', position:'AM', stats:{pace:81,shot:84,pass:88,dribble:87,defense:49,physical:72} },
+  { name:'이도협', position:'CB', stats:{pace:75,shot:41,pass:72,dribble:63,defense:89,physical:88} },
+  { name:'이의진', position:'RW', stats:{pace:92,shot:83,pass:79,dribble:91,defense:37,physical:70} },
+  { name:'이정준', position:'CM', stats:{pace:79,shot:76,pass:85,dribble:84,defense:73,physical:77} },
+  { name:'이준서', position:'ST', stats:{pace:91,shot:90,pass:69,dribble:88,defense:28,physical:82} },
+  { name:'이호현', position:'LB', stats:{pace:83,shot:53,pass:76,dribble:75,defense:85,physical:81} },
+  { name:'임규현', position:'GK', stats:{pace:43,shot:13,pass:67,dribble:38,defense:94,physical:84} },
+  { name:'임지훈', position:'CB', stats:{pace:74,shot:39,pass:70,dribble:62,defense:91,physical:89} },
+  { name:'정민우', position:'CM', stats:{pace:80,shot:77,pass:86,dribble:84,defense:72,physical:78} },
+  { name:'조성윤', position:'LW', stats:{pace:92,shot:82,pass:78,dribble:91,defense:35,physical:69} },
+  { name:'최재혁', position:'ST', stats:{pace:90,shot:91,pass:70,dribble:87,defense:31,physical:81} },
+  { name:'황녕순', position:'CB', stats:{pace:72,shot:37,pass:69,dribble:60,defense:92,physical:90} },
+  { name:'고우주', position:'AM', stats:{pace:82,shot:84,pass:89,dribble:88,defense:48,physical:73} },
+  { name:'김민성', position:'RB', stats:{pace:85,shot:56,pass:77,dribble:76,defense:84,physical:82} },
+  { name:'김범규', position:'DM', stats:{pace:73,shot:60,pass:82,dribble:74,defense:87,physical:85} },
+  { name:'김성재', position:'CM', stats:{pace:79,shot:75,pass:85,dribble:83,defense:74,physical:77} },
+  { name:'김영우', position:'LW', stats:{pace:91,shot:81,pass:78,dribble:90,defense:36,physical:70} },
+  { name:'김윤태', position:'CB', stats:{pace:74,shot:40,pass:71,dribble:63,defense:90,physical:88} },
+  { name:'김현재', position:'ST', stats:{pace:89,shot:90,pass:69,dribble:86,defense:30,physical:80} },
+  { name:'박범준', position:'CM', stats:{pace:78,shot:76,pass:84,dribble:83,defense:73,physical:77} },
+  { name:'박상권', position:'CB', stats:{pace:73,shot:38,pass:70,dribble:61,defense:91,physical:89} },
+  { name:'박영민', position:'RW', stats:{pace:93,shot:83,pass:79,dribble:92,defense:35,physical:70} },
+  { name:'서민석', position:'LB', stats:{pace:84,shot:54,pass:76,dribble:75,defense:84,physical:82} },
+  { name:'안홍현', position:'DM', stats:{pace:74,shot:62,pass:81,dribble:74,defense:86,physical:84} },
+  { name:'염기돈', position:'GK', stats:{pace:42,shot:12,pass:65,dribble:37,defense:95,physical:87} },
+  { name:'윤주원', position:'AM', stats:{pace:81,shot:84,pass:88,dribble:89,defense:49,physical:72} },
+  { name:'이명준', position:'CM', stats:{pace:79,shot:75,pass:86,dribble:84,defense:73,physical:78} },
+  { name:'이민성', position:'CB', stats:{pace:74,shot:39,pass:70,dribble:62,defense:90,physical:88} },
+  { name:'이도원', position:'LW', stats:{pace:92,shot:82,pass:78,dribble:91,defense:36,physical:69} },
+  { name:'이승우', position:'ST', stats:{pace:94,shot:88,pass:76,dribble:93,defense:32,physical:74} },
+  { name:'이예찬', position:'RB', stats:{pace:84,shot:55,pass:76,dribble:76,defense:84,physical:81} },
+  { name:'채현수', position:'CM', stats:{pace:80,shot:77,pass:85,dribble:84,defense:72,physical:78} },
+  { name:'황승조', position:'CB', stats:{pace:73,shot:38,pass:69,dribble:61,defense:92,physical:90} },
 ];
 
 /* =============================== STATE =============================== */
@@ -757,7 +837,6 @@ const state = {
 };
 let editingPlayerId = null;
 let editDraft = null;
-let isCreatingPlayer = false;
 
 /* =============================== UTIL =============================== */
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
@@ -805,7 +884,7 @@ function makePlayer(targetRating, position){
   let wsum=0,vsum=0;
   STAT_KEYS.forEach(k=>{wsum+=w[k];vsum+=w[k]*stats[k];});
   const rating = clamp(Math.round(vsum/wsum),28,99);
-  const name = pick(LAST_NAMES) + ' ' + pick(FIRST_NAMES);
+  const name = pick(PLAYER_NAME_POOL);
   const player = {
     id: nextId++,
     name,
@@ -1029,20 +1108,8 @@ function renderSquad(){
 function openPlayerModal(playerId){
   const player = state.roster.find(p=>p.id===playerId);
   if(!player) return;
-  isCreatingPlayer = false;
   editingPlayerId = playerId;
   editDraft = {name:player.name, stats:{...player.stats}};
-  renderPlayerModal();
-  document.getElementById('playerModal').style.display = 'flex';
-}
-function openAddPlayerModal(){
-  isCreatingPlayer = true;
-  editingPlayerId = null;
-  editDraft = {
-    name: '',
-    position: 'ST',
-    stats: {pace:65, shot:65, pass:65, dribble:65, defense:65, physical:65},
-  };
   renderPlayerModal();
   document.getElementById('playerModal').style.display = 'flex';
 }
@@ -1050,23 +1117,19 @@ function closePlayerModal(){
   document.getElementById('playerModal').style.display = 'none';
   editingPlayerId = null;
   editDraft = null;
-  isCreatingPlayer = false;
 }
 function renderPlayerModal(){
-  const player = isCreatingPlayer ? null : state.roster.find(p=>p.id===editingPlayerId);
-  if(!isCreatingPlayer && !player) return;
-  const position = isCreatingPlayer ? editDraft.position : player.position;
+  const player = state.roster.find(p=>p.id===editingPlayerId);
+  if(!player) return;
+  const position = player.position;
   const rating = computeRatingFromStats(position, editDraft.stats);
   const rarity = rarityFromRating(rating);
-  const photoSubject = isCreatingPlayer
-    ? {id: editingPlayerId||'draft', name: editDraft.name||'?', position, rarity}
-    : player;
-  const traits = isCreatingPlayer ? [] : (player.traits || []);
+  const traits = player.traits || [];
   const body = document.getElementById('modalBody');
   body.innerHTML = `
-    <h3 class="display" style="margin:0 0 12px;font-size:16px;">${isCreatingPlayer? '새 선수 직접 추가' : '선수 상세 정보'}</h3>
+    <h3 class="display" style="margin:0 0 12px;font-size:16px;">선수 상세 정보</h3>
     <div class="modal-card-head" style="--rc:${RARITY_COLOR[rarity]}">
-      <img class="modal-avatar" src="${getAvatarUri(photoSubject)}" alt="" />
+      <img class="modal-avatar" src="${getAvatarUri(player)}" alt="" />
       <div class="head-info">
         <div class="head-row">
           <div class="modal-rating mono">${rating}</div>
@@ -1077,12 +1140,6 @@ function renderPlayerModal(){
     </div>
     <label class="modal-label">선수 이름</label>
     <input type="text" id="editName" value="${escapeHtml(editDraft.name)}" maxlength="16" placeholder="선수 이름 입력" />
-    ${isCreatingPlayer? `
-    <label class="modal-label">포지션</label>
-    <select id="editPosition" class="mono">
-      ${POSITIONS.map(p=>`<option value="${p}" ${p===editDraft.position?'selected':''}>${POSITION_LABEL[p]}</option>`).join('')}
-    </select>
-    ` : ''}
     <label class="modal-label">능력치</label>
     <div class="stat-edit-list">
       ${STAT_KEYS.map(k=>`
@@ -1093,21 +1150,13 @@ function renderPlayerModal(){
         </div>
       `).join('')}
     </div>
-    ${!isCreatingPlayer? `
     <label class="modal-label" style="margin-top:14px;">히든 능력치 ${rarity==='gold'||rarity==='icon' ? '' : '(골드 등급 이상만 보유)'}</label>
     <div class="traits-wrap">
       ${traits.length? traits.map(t=>`<span class="trait-badge">${escapeHtml(t)}</span>`).join('') : `<span class="no-traits-hint">이 선수는 히든 능력치가 없습니다.</span>`}
     </div>
-    ` : ''}
-    ${!isCreatingPlayer? `<div class="modal-nation">${player.nation}</div>` : ''}
+    <div class="modal-nation">${player.nation}</div>
   `;
   document.getElementById('editName').oninput = (e)=>{ editDraft.name = e.target.value; };
-  if(isCreatingPlayer){
-    document.getElementById('editPosition').onchange = (e)=>{
-      editDraft.position = e.target.value;
-      renderPlayerModal();
-    };
-  }
   body.querySelectorAll('input[type=range]').forEach(inp=>{
     inp.oninput = ()=>{
       editDraft.stats[inp.dataset.stat] = parseInt(inp.value);
@@ -1122,28 +1171,6 @@ function renderPlayerModal(){
   });
 }
 function savePlayerEdit(){
-  if(isCreatingPlayer){
-    const name = (editDraft.name||'').trim();
-    if(!name){ showToast('선수 이름을 입력해주세요.'); return; }
-    const position = editDraft.position;
-    const stats = {...editDraft.stats};
-    const rating = computeRatingFromStats(position, stats);
-    const newPlayer = {
-      id: nextId++,
-      name,
-      position,
-      rating,
-      stats,
-      rarity: rarityFromRating(rating),
-      nation: pick(NATIONS),
-    };
-    assignTraits(newPlayer);
-    state.roster.push(newPlayer);
-    closePlayerModal();
-    renderSquad();
-    showToast(`'${name}' 선수가 팀에 추가되었습니다.`);
-    return;
-  }
   const player = state.roster.find(p=>p.id===editingPlayerId);
   if(!player || !editDraft) return;
   const name = editDraft.name.trim();
@@ -1637,12 +1664,13 @@ function drawPhysicsFrame(){
       ctx.restore();
       ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
       ctx.strokeStyle = color; ctx.lineWidth = 1.6; ctx.stroke();
-      ctx.font = '7px Rajdhani, Arial, sans-serif';
+      const fontSize = Math.max(9, Math.round(r*0.95));
+      ctx.font = `600 ${fontSize}px Rajdhani, Arial, sans-serif`;
       ctx.textAlign = 'center';
-      ctx.shadowColor = 'rgba(0,0,0,0.85)'; ctx.shadowBlur = 2;
+      ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 3;
       ctx.fillStyle = 'rgba(255,255,255,0.95)';
       const shortName = (p.name||'').trim().split(' ').pop();
-      ctx.fillText(shortName, x, y + r + 8);
+      ctx.fillText(shortName, x, y + r + fontSize + 2);
       ctx.shadowBlur = 0;
     });
   };
@@ -1938,7 +1966,6 @@ async function init(){
   setupModal();
   document.getElementById('startMatchBtn').onclick = startMatch;
   document.getElementById('shareSquadBtn').onclick = shareSquad;
-  document.getElementById('addPlayerBtn').onclick = openAddPlayerModal;
 
   const loaded = await loadLocalProgress();
   if(!loaded) generateStarterRoster();
