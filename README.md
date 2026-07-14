@@ -1,0 +1,2 @@
+# bugo-onine
+asdf
