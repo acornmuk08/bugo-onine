@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FC 챌린저 — 나만의 축구단</title>
+<title>FC 부고</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -441,8 +441,8 @@ select#formationSelect{
       <div class="brand">
         <div class="badge">⚽</div>
         <div>
-          <h1>FC 챌린저</h1>
-          <span class="sub">MY FOOTBALL CLUB</span>
+          <h1>FIFA 부고 ONLINE</h1>
+          <span class="sub">KNUHS FOOTBALL CLUB</span>
         </div>
       </div>
       <div class="stat-strip">
@@ -721,8 +721,8 @@ const PACKS = [
 ];
 
 const OPP_NAME_POOL = [
-  ['🛡️','울산 스틸러스FC',62],['⚔️','서울 유나이티드',69],['🐉','부산 드래곤즈',75],
-  ['🦅','뮌헨슈타트 FC',81],['👑','레알 노바',87],['🔥','AC 인터내셔널',92],
+  ['🛡️','한일FC',62],['⚔️','AC 대성마이맥',69],['🐉','메가스터디 러셀 시티',75],
+  ['🦅','시대인재 FC',81],['👑','레알 현역이들',87],['🔥','N수생 유나이티드',92],
 ];
 
 /* 여기에 선수를 직접 추가하면 게임 시작 시 '보유 선수' 명단에 자동으로 포함됩니다.
@@ -736,6 +736,8 @@ const OPP_NAME_POOL = [
 */
 const CUSTOM_PLAYERS = [
   // 이 배열 안에 원하는 만큼 선수 객체를 추가하세요.
+  { name:'이혁준', position:'AM', stats:{pace:88,shot:90,pass:90,dribble:85,defense:45,physical:65} },
+  { name:'강현묵', position:'RB', stats:{pace:88,shot:40,pass:70,dribble:75,defense:70,physical:75} },
 ];
 
 /* =============================== STATE =============================== */
